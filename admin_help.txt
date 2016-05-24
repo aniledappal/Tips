@@ -1,0 +1,19 @@
+synchronizing a with ssh key and different port
+# sudo rsync -avz -e "ssh -i /home/ubuntu/key.pem -p 30486" /srv/csvn/data/repositories/ ubuntu@ip:/srv/csvn/data/repositories/
+
+change file permission
+
+#! /bin/bash
+chown www-data:www-data  -R * # Let Apache be owner
+find . -type d -exec chmod 755 {} \;  # Change directory permissions rwxr-xr-x
+find . -type f -exec chmod 644 {} \;  # Change file permissions rw-r--r--
+
+database updates
+
+UPDATE edp_posts SET option_value = replace(option_value, 'http://54.164.83.129/OTHTEPWEDG/cms/', 'http://www.theedupro.com') WHERE option_name = 'home' OR option_name = 'siteurl';
+
+UPDATE edp_posts SET guid = replace(guid, 'http://54.164.83.129/OTHTEPWEDG/cms/', 'http://www.theedupro.com');
+
+UPDATE edp_posts SET post_content = replace(post_content, 'http://54.164.83.129/OTHTEPWEDG/cms/', 'http://www.theedupro.com');
+
+
