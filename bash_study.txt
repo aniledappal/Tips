@@ -1,0 +1,230 @@
+interactive and nonintractive environment
+interactive : shell environment (we can type and execute commands)
+nonintractive : a shellscript (the command will execute in background)
+
+builtin and nonbultin
+builtin system commans
+nonbultin script or something
+
+customising user environment used to below
+1) profile file
+/etc/profile
+main configuration file for bash
+global varables contains in profile HOSTNAME HISTSIZE like that
+
+/etc/bashrc
+logic function aliases are contains in bashrc
+in PS1 we are setting the user lofin screen its mentioned in bashrc
+
+/etc/skell
+it will inherit to new user directry
+.bash_logout
+what to do after logout we can modify that
+.bash_profile
+we can overright /etc/profile
+.bashrc
+
+
+.bash_profile have high priorty than /etc/profile
+
+test
+$?
+0 good
+1 is bad
+condections (intergers)
+-eq = equal to
+-le = less than or equal to
+-ne = not equal to
+-lt less than
+-gt = grater than
+# test 500 -ne 200; echo $?
+it will return 0 its correct thats why
+
+condections (varables)
+=  = equal to
+!= = not equal to
+
+# test hello_world = hello_world ; echo $?
+it will return 0 its a true statement
+
+testing which file is created first
+touch :- touch command is used to create a file or change the time stamp of an existing file
+# touch testing1
+# touch testing2
+# test testing1 -nt testing2 (-nt newer than, -ot older than)
+# echo $
+it will return 1
+#test 
+test charector or block device
+# test -c /dev/cua0;echo $? // checking the device is charector or block device used to -b or -c option
+test -e testing3; echo $? // the file is existing or not
+test -f testing3; echo $? // checking the varable is the name of a file or directory
+-s for cheching is a socket file
+
+cat
+concatinatin
+tac is reverse cat
+cat -A abc.txt // it will show all charectors $= end of line ^ is fr space
+cat abc dce > ace //add contents of 2 filess in to single file
+
+wc
+
+word count
+
+#wc data1
+	lines	words	charectors
+#wc -l data1
+lines
+# line `wc -l data1` //it will store linecount
+# wc -l data1 |cut -d ' ' -f 7 // -f field seperator -d delimeter it is used to cut one string
+
+
+ls
+
+# ls --time=atime -ltr data1 //display access time
+# ls
+
+
+sleep
+sleep a script
+#sleep 2 //in seconds
+#usleep 2 // in micro seconds
+
+time
+
+ps -aux |grep blablabla
+
+watch tail /var/log/messages //it will show log messages
+ 
+time tail /var/var/log/messages
+
+date // show date
+getting the last modifications details of a file
+date -r file_name +%s //in seconds
+date -r file_name //last modification details
+date -r file_name +%s-%d
+  
+expr //expression
+operators
+< ,> ,= 
+eg
+
+interger operations
+expr 10 + 10
+20
+expr 10 * 100
+error
+expr 10 \* 100    // * is a predefined varable in bash environment so we needs to use \ for overcome the error
+
+# i=1
+# i = `expr $i+1`
+# echo $i
+2
+varable operations
+
+# expr Linux = Linux
+1
+#expr Linux = linux
+0
+#expr Linux
+Linux
+#expr length Linux
+5
+# expr substr LinuxCBT 1 5 /it will show 1 to 5 charctiors in the string
+Linux
+#var1=LinuxCBT
+#expr substr var1 1 5
+Linux
+#expr length $var1
+8
+# touch `date +%F`.log //craete a file with date prefix
+#date +%N   /// we can create random string used to date command
+# seq 50 // it will genrate 1 to 50
+# seq 0 9 //it will list 0 to 9
+#ctlr c //send the job to background
+#fg //fg moves the job to forground
+# jobs // it is used to show the stopped jobs or background running jobs
+#seq 1000000000 > junk1.data & // it will run background
+#jobs //it will list the running jobs
+# ls -l junk1.data //shows the cahnges in size in each and every seconds
+# watch ls -l junk1.data //we can show the changes dynamically
+#fg // used to get the job forground
+#nano junk1.data
+2
+1
+Redhat
+Debian
+Debian
+Linux
+#sort junk1.data //it will sort the contents of the file and disply it
+unique
+#sort junk1.data | uniq // it will sort and remove duplicates
+cut
+# cat /etc/passwd |cut -d: -f1,2 //it will shows the /etc/passwd contents -d delimeted by : and -f is the field and specify the field number
+tr //translate uppercase to lower case or wiseverse
+eg
+#echo FILE1 |tr A-Z a-z //it will translate uppercase to lowercase
+file1
+#echo FILEE1 |tr -s A-Z // it will remove the repeting charector
+FILE1
+#echo FILEE1 |tr -s A-Z |tr A-Z a-z
+file1
+#echo FILEE1 |tr -s A-Z |tr [:upper:] [:lower:]
+file1
+#echo FilE1 |tr -c A-Z a-z //-c is dont operate A-Z a-z charectors the output would be blank
+#echo FilE1 |tr -c A-Z z A-Z z //it will replace all other Uppercase letters to z
+FzzEzz
+
+// wrote a script for change the file name lowercase to uppercase
+#vi tr1.sh
+
+#!/bin/bash
+#Author: Anil
+#Date: 04.06.2016
+#Purpose: Illustrate using tr in a script to convert uppercase to lowercase filename
+
+for i in `ls -A`
+do
+	newname=`echo $i | tr A-Z a-z`
+	mv $i $newname
+done
+
+#End
+
+
+#touch FILE{1,2,3,4,5}
+#ls
+FILE1
+FILE2
+FILE3
+FILE4
+FILE5
+// after running the script the file names are converted in to uppercase names to lowercase names
+for preventing the fault run of the script lets add one line
+
+#vi tr1.sh
+
+#!/bin/bash
+#Author: Anil
+#Date: 04.06.2016
+#Purpose: Illustrate using tr in a script to convert uppercase to lowercase filename
+
+myscriptname = `basename $0`;
+#exit;
+for i in `ls -A`
+do
+    if[$i =$myscriptname]
+	then
+	echo""
+	elseif [$i != $myscriptname]
+	newname=`echo $i | tr A-Z a-z`
+	mv $i $newname
+done
+
+#End
+
+
+
+
+
+
