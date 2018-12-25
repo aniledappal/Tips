@@ -1,4 +1,4 @@
-Linux Server Automation Scripts
+Easy way to do complex tasks
 ====
 
-Automation everywere , admin helper .
+I am lazy, so the tips always help me to do complex tasks .
