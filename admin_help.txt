@@ -19,7 +19,7 @@
 
         UPDATE edp_posts SET post_content = replace(post_content, 'http://old_url', 'http://new_url');
 
-3) Search for a string in a biary
+3) Search for a strings
 # strings /opt/google/chrome/lib/libstdc++.so.6 | grep -e 'GLIBC*'
 
 4) Find commands
