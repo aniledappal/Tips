@@ -1,1 +1,51 @@
 Web applicatio VAPT Tips
+
+HTTP Response Codes
+
+1XX = Informational
+2XX = Request successfully
+3XX = Redirects
+4XX = Client Request Error
+5XX = Server side error
+
+
+
+CURL
+
+# curl -v www.abc.com // to view a website using curl
+#  curl -v -X POST http://abc.com/abc/   //curl used post request
+
+
+
+NETCAT
+
+
+# nc www.abc.com 80   //manualy requesting to a webserver in http 1.0
+> GET / HTTP/1.0.  //http 1.0
+>Host: www.abc.com
+
+# nc www.abc.com 80.    //manualy requesting to a webserver in http 1.1 
+> GET / HTTP/1.1  //http 1.1
+>Host: www.abc.com
+> Connection: close
+
+
+NMAP
+
+Script location /usr/share/namp/scripts/
+
+# nmap --script=http-methods.nse --script-args=http-methods.retest=1 (ip/Host_details) -n -p 80. //test options indudaly 
+
+
+METASPLOIT
+
+# msfconsole
+msf> set RHOSTS (Host_details)
+msf> use auxiliary/scanner/http/options
+msf>run //it will show the options availble on RHOSTS
+
+
+
+WIRESHARK
+
+
