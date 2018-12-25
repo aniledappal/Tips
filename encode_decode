@@ -1,0 +1,21 @@
+1) Base64
+  a) encode
+  #openssl enc -base64 <<< 'Hello, World!'
+  #
+  b) decode
+  #openssl enc -base64 -d <<< SGVsbG8sIFdvcmxkIQo=
+  #echo `echo SGVsbG8sIFdvcmxkIQo= | base64 --decode`
+2) Rot13
+  a)encode
+  #echo "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG" | tr '[A-Z]' '[N-ZA-M]'
+  b)decode
+  #echo "GUR DHVPX OEBJA SBK WHZCF BIRE GUR YNML QBT" | tr '[N-ZA-M]' '[A-Z]'
+  # Case-sensitive version of ROT13
+  tr '[A-Za-z]' '[N-ZA-Mn-za-m]'
+
+
+3) Caesar cipher 
+  a)encoding
+  #echo "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG" | tr '[A-Z]' '[X-ZA-W]'
+  b)decoding
+  #echo "QEB NRFZH YOLTK CLU GRJMP LSBO QEB IXWV ALD" | tr '[X-ZA-W]' '[A-Z]'
