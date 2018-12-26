@@ -60,6 +60,30 @@ Create response string using python
 >>>responce = hashlib.md5(response_string).hexdigest()
 >>>
 
+Cookies
+
+HTTP is a stateless protocal cookies are used to overcome this
+size limit is K
+
+Server end syntax
+Set-Cookie: <name>=<value>[; <name>=<value>]...[; expires=<date>][; domain=<domain_name>][; path=<some_path>][; secure][; httponly]
+<name>=<value>. //this shoud be any value
+expires=<date> // expiray date of the cookie format is DD-MM-YYY HH:MM:SS GMT ,RFC 6265 have Max-age intervel after the cookie recives
+domain=<domain_name> // domain for which it is valid
+path=<some_path> // path of for the cookie
+secure // only be sent over HTTPS connection, Transport layr protction
+httponly // cannot be accessed by client side scripts directly, cannot be scripted using js ,XSS mitigation machanisam
+
+Client end syntax
+Cookie: <name>=<value> [;<name>=<value>]
+
+Session
+
+Unique identfier or token to identify a user and Session
+
+SSL
+
+
 
 
 CURL
