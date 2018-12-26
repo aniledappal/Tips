@@ -35,7 +35,8 @@ NMAP
 Script location /usr/share/namp/scripts/
 
 # nmap --script=http-methods.nse --script-args=http-methods.retest=1 (ip/Host_details) -n -p 80. //test options indudaly 
-
+#namp -p 80 --scripthttp-brute --script-args 'http-brute.hostname={host name},http-brute.method=POST,http-brute.path={path},userdb={username list file},passdb={password list file}' -v {hostname} -n //brutefore web form using nmap
+#
 
 METASPLOIT
 
