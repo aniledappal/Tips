@@ -33,17 +33,38 @@ NETCAT
 NMAP
 
 Script location /usr/share/namp/scripts/
-
+1) http option scaning
 # nmap --script=http-methods.nse --script-args=http-methods.retest=1 (ip/Host_details) -n -p 80. //test options indudaly 
+2) Http bruteforce
 #namp -p 80 --scripthttp-brute --script-args 'http-brute.hostname={host name},http-brute.method=POST,http-brute.path={path},userdb={username list file},passdb={password list file}' -v {hostname} -n //brutefore web form using nmap
 #
 
 METASPLOIT
 
-# msfconsole
+search "module_name" //you can search modules in metasploit
+
+1) http options scaning
+# msfconsole 
 msf> set RHOSTS (Host_details)
 msf> use auxiliary/scanner/http/options
 msf>run //it will show the options availble on RHOSTS
+2) http bruteforce
+# msfconsole 
+msf> use auxiliary/scanner/http/http_login
+msf> set RHOSTS {host_name}
+msf> set AUTH_URI {uri}
+msf> set BLANK_PASSWORDS fals
+msf> set PASS_FILE {password_file}
+msf> set REQUESTTYPE POST
+msf> set STOP_ON_SUCC?ESS true
+msf> set THREADS 20
+msf> set USERNAME admin         //you can use USER_FILE insted of this
+msf> set VHOST {hostname}
+msf>set USER_AS_PASS false 
+msf> set USERPASS_FILE ''
+msf> set USER_FILE ''
+msf> run
+
 
 
 
