@@ -8,6 +8,58 @@ HTTP Response Codes
 4XX = Client Request Error
 5XX = Server side error
 
+RFC 2069
+
+realm = set by server admin
+nonce = a random string 
+opaque= a random string
+uri = you need acces to this 
+response = cross match this to authenticate
+
+Hash1= MD5(Username:Relm:Password)
+Hash2= MD5(method:URI)
+response = MD5(HAsh1:nonce:HAsh2)
+
+Create response string using python
+#python
+>>>import hashlib
+>>>hash1 = hashlib.md5('admin:relm:password').hexdigest()
+>>>hash2 = hashlib.md5('GET:URI').hexdigest()
+>>>nonce= "enter the nonce"
+>>>responce_string = hash1 + ':' + nonce + ':' + hash2
+>>>responce = hashlib.md5(response_string).hexdigest()
+>>>
+
+RFC 2617
+
+
+
+relam = set by server admin
+qop = "auth,auth-int"  //QOP quality of protection implimentation
+nonce = sent by server
+opaque =  same in responce and request 
+uri = secured resource location
+nc = counter
+cnonce = client nonce
+response =   //
+
+Hash1= MD5(Username:Relm:Password)
+Hash2= MD5(method:URI)
+response = MD5(HAsh1:Nonce:NonceCount:Client_nonce:QOP:HAsh2)
+
+Create response string using python
+#python
+>>>import hashlib
+>>>hash1 = hashlib.md5('admin:relm:password').hexdigest()
+>>>hash2 = hashlib.md5('GET:URI').hexdigest()
+>>>nonce= "enter the nonce"
+>>>nonceCount = "enter the nonceCount"
+>>>clientNonce = "enter the cnonce"
+>>>qop = "auth"
+>>>responce_string = hash1 + ':' + nonce + ':' + nonceCount + ':' + clientNonce + ':' + qop +  ':' + hash2
+>>>responce = hashlib.md5(response_string).hexdigest()
+>>>
+
 
 
 CURL
