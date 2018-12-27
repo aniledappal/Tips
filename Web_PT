@@ -1,4 +1,6 @@
-Web applicatio VAPT Tips
+                                             Web applicatio VAPT Tips
+
+=================================================== INFORMATION ===============================================================
 
 HTTP Response Codes
 
@@ -84,7 +86,7 @@ Unique identfier or token to identify a user and Session
 SSL
 
 
-
+===================================================== TOOLS ==================================================================
 
 CURL
 
@@ -151,4 +153,67 @@ TCPXTRACT
 capture and extract files from a http traffic
 # tcpxtract -d {interface} -o {directory}
 
+
+=============================================== METHODS =====================================================================
+INJECTION attacks
+
+Frontend (client)
+- Rendering attack => Html injection attck
+- Code execution => JS injection (XSS)
+
+Backend (Server)
+-  Command injection
+   * SQL injection ...etc
+
+Html injection
+* user input not sanitized
+* Malicious inputs consisits of HTML injected in to page
+* Render page as per attackers choice to victim 
+
+Eg: not sanitized code
+
+#cat a.php
+<html>
+<body>
+  welcome
+  <?php
+    echo $_REQUEST['nickname'];
+    ?>
+    !
+</body>
+</html>
+
+how to inject code here
+
+# http://localhost/a.php?nichname=<b>Test</b>Please click on this link<a href="http://xyz.com"> Login Here.  //// You can create your own attack vector here
+
+Injection inside tag attribute
+
+inject code in to form or form elements
+
+Eg: not sanitized code
+
+#cat b.php
+<html>
+
+<body>
+
+	<b>Welcome Guest! Please login</b>
+
+	<br>
+ 	<form action='/'>
+		<input type="hidden" name="sessionid" value="<?php echo $_REQUEST['sid']; ?>">
+		Username: <input type="text" name="username"><br>
+		Password: <input type="password" name="pass"><br>
+		<input type="submit" value="Login">
+	</form>
+
+
+</body>
+
+</html>
+
+# http://localhost/a.php?sid=<b>Test</b>Please click on this link<a href="http://xyz.com"> Login Here.  //// You can create your own attack vector here
+
+Xml Http Request (XHR)
 
