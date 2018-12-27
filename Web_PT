@@ -147,3 +147,8 @@ msf> run
 WIRESHARK
 
 
+TCPXTRACT
+capture and extract files from a http traffic
+# tcpxtract -d {interface} -o {directory}
+
+
