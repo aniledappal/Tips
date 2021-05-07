@@ -27,4 +27,12 @@
         # find . -iname "*" -type f -print0  |  xargs -0 grep -H "RAPTOR_INCLUDE_DIR"
         b) replace a string in all files inside a directory
         # find . -type f -exec sed -i 's/351p351/2520p360/g' {} +
+        
+5) For Extending storage space of local volum
+
+        lvextend -L +8G /dev/mapper/vg00-backups
+
+        resize2fs /dev/mapper/vg00-backups
+        
+ 
 
