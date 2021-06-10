@@ -1,0 +1,127 @@
+Rem Attribute VBA_ModuleType=VBAModule
+Option VBASupport 1
+Option Explicit
+
+Private Sub Test()
+  Debug.Print IPv4ToCIDR("10.0.0.0", "10.0.0.255")
+End Sub
+
+Public Function IPv4ToCIDR(ByVal sIPBeg As String, sIPEnd As String) As String
+  ' shg 2018
+  ' requires a reference to Microsoft Scripting Runtime
+  ' ported from https://blog.ip2location.com/knowledge-base/how-to-convert-ip-address-range-into-cidr/
+  ' on-line converter at https://www.ipaddressguide.com/cidr
+
+  Dim iIPBeg        As Long
+  Dim iIPEnd        As Long
+  
+  Dim dIPBeg        As Double
+  Dim dIPEnd        As Double
+  
+  Dim maxSize       As Long
+  Dim mask          As Long
+  Dim maskBase      As Long
+  Dim x             As Double
+  Dim maxDiff       As Long
+  Dim dic           As Dictionary
+  Dim sIP           As String
+
+  Set dic = New Dictionary
+  
+  iIPBeg = IP2Long(sIPBeg)
+  dIPBeg = ULong2Dbl(iIPBeg)
+  
+  iIPEnd = IP2Long(sIPEnd)
+  dIPEnd = ULong2Dbl(iIPEnd)
+
+  Do While dIPEnd >= dIPBeg
+    Debug.Print Long2IP(iIPBeg), Long2IP(iIPEnd)
+    maxSize = 32
+
+    Do While maxSize > 0
+      mask = iMask(maxSize - 1)
+      maskBase = iIPBeg And mask
+      If maskBase <> iIPBeg Then Exit Do
+      maxSize = maxSize - 1
+    Loop
+
+    x = Log(dIPEnd - dIPBeg + 1) / Log(2#)
+    maxDiff = 32 - Int(x)
+
+    If maxSize < maxDiff Then maxSize = maxDiff
+
+    sIP = Long2IP(iIPBeg)
+    dic.Add Key:=sIP & "/" & maxSize, Item:=0&
+
+    ' iIPBeg += Math.Pow(2, 32 - maxSize)
+    dIPBeg = dIPBeg + 2 ^ (32 - maxSize)
+    iIPBeg = Dbl2ULong(dIPBeg)
+  Loop
+
+  IPv4ToCIDR = Join(dic.Keys, vbLf)
+End Function
+
+Function iMask(ByVal nBits As Integer) As Long
+  iMask = "&H" & BinToHex(String(nBits, "1") & String(32 - nBits, "0"), 8)
+  'Return Math.Pow(2, 32) - Math.Pow(2, (32 - nBits))
+End Function
+
+Function IP2Long(ByVal sIP As String) As Long
+  Dim asOctet()     As String
+  Dim i             As Long
+
+  asOctet = Split(sIP, ".")
+  For i = 0 To 3
+    asOctet(i) = Right("0" & Hex(asOctet(i)), 2)
+  Next i
+  IP2Long = CLng("&H" & Join(asOctet, ""))
+End Function
+
+Function Long2IP(ByVal iIP As Long) As String
+  Dim asOct(0 To 3) As String
+  Dim i             As Long
+  Dim s             As String
+
+  s = Right("0000000" & Hex(iIP), 8)
+  For i = 0 To 6 Step 2
+    asOct(i \ 2) = CLng("&H" & Mid(s, i + 1, 2))
+  Next i
+
+  Long2IP = Join(asOct, ".")
+End Function
+
+Function BinToHex(ByVal sBin As String, _
+                  Optional nNyb As Long = 0) As String
+  ' shg 2007, 2009, 2015
+
+  Dim i             As Long
+  Dim sNyb          As String   ' a nybble of sBin
+
+  ' left-pad to multiple of 4 bits
+  If Len(sBin) < 4 Then sBin = "0000"
+  sBin = String((Len(sBin) - 4) Mod 4, "0") & sBin
+
+  On Error GoTo Oops
+  For i = Len(sBin) - 3 To 1 Step -4
+    sNyb = Mid(sBin, i, 4)
+    BinToHex = Hex(8 * Mid(sNyb, 1, 1) + 4 * Mid(sNyb, 2, 1) + 2 * Mid(sNyb, 3, 1) + Mid(sNyb, 4, 1)) & BinToHex
+  Next i
+
+  If Len(BinToHex) < nNyb Then BinToHex = String(nNyb - Len(BinToHex), "0") & BinToHex
+
+  Exit Function
+
+Oops:
+  BinToHex = "Invalid character!"
+End Function
+
+Function ULong2Dbl(i As Long) As Double
+  ' converts a (signed) long to a Double as if the Long were unsigned
+  If i >= 0 Then ULong2Dbl = i Else ULong2Dbl = i + 2 ^ 32
+End Function
+
+Function Dbl2ULong(d As Double) As Long
+  ' converts a double to an unsigned long
+  If d < 2 ^ 31 Then Dbl2ULong = d Else Dbl2ULong = d - 2 ^ 32
+End Function
+
